@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Expense Intelligence System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #eef2ff, #f8fafc);
+        }
+
+        /* NAVBAR */
+        .navbar {
+            background: linear-gradient(90deg, #4f46e5, #6366f1);
+            padding: 18px 40px;
+            color: white;
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 40px auto;
+        }
+
+        /* CARD */
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+        }
+
+        h3 {
+            margin-bottom: 15px;
+            color: #1e293b;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #475569;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px 12px;
+            margin: 8px 0 15px;
+            border-radius: 10px;
+            border: 1px solid #cbd5e1;
+            transition: 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 2px rgba(99,102,241,0.2);
+        }
+
+        /* BUTTON */
+        button {
+            background: linear-gradient(90deg, #4f46e5, #6366f1);
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(79,70,229,0.3);
+        }
+
+        .danger-btn {
+            background: linear-gradient(90deg, #dc2626, #ef4444);
+        }
+
+        .danger-btn:hover {
+            box-shadow: 0 5px 15px rgba(220,38,38,0.3);
+        }
+
+        /* SUMMARY */
+        .summary {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .summary-box {
+            flex: 1;
+            min-width: 220px;
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .summary-box:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+
+        .summary-box p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .summary-box h2 {
+            margin-top: 8px;
+            color: #4f46e5;
+            font-size: 26px;
+        }
+
+        /* TABLE */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        table th {
+            background: #4f46e5;
+            color: white;
+            padding: 12px;
+            font-size: 14px;
+        }
+
+        table td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        table tr:hover {
+            background: #f1f5ff;
+        }
+
+        /* FOOTER */
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            padding: 20px;
+            background: #4f46e5;
+            color: white;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    Expense Pattern Intelligence System
+</div>
+
+<div class="container">
+
+    <!-- Add Expense -->
+    <div class="card">
+        <h3>Add Expense</h3>
+        <form method="POST">
+            <input type="hidden" name="add_expense">
+
+            <label>Amount</label>
+            <input type="number" step="0.01" name="amount" required>
+
+            <label>Description</label>
+            <input type="text" name="description" required>
+
+            <label>Date</label>
+            <input type="date" name="date" required>
+
+            <label>Payment Mode</label>
+            <select name="payment_mode">
+                <option>Cash</option>
+                <option>UPI</option>
+                <option>Card</option>
+            </select>
+
+            <button type="submit">Add Expense</button>
+        </form>
+    </div>
+
+    <!-- Budget -->
+    <div class="card">
+        <h3>Set Monthly Budget</h3>
+        <form method="POST">
+            <input type="hidden" name="set_budget">
+            <input type="number" step="0.01" name="budget_amount" placeholder="Enter Budget" required>
+            <button type="submit">Set Budget</button>
+        </form>
+    </div>
+
+    <!-- Summary -->
+    <div class="summary">
+        <div class="summary-box">
+            <p>Total Spent</p>
+            <h2>₹ {{ total_spent }}</h2>
+        </div>
+
+        <div class="summary-box">
+            <p>Budget</p>
+            <h2>₹ {{ budget_amount }}</h2>
+        </div>
+
+        <div class="summary-box">
+            <p>Remaining</p>
+            <h2>₹ {{ remaining }}</h2>
+        </div>
+    </div>
+
+    <!-- PDF Download -->
+    <div class="card">
+        <a href="/download_pdf">
+            <button>Download Monthly Report (PDF)</button>
+        </a>
+    </div>
+
+    <!-- Reset -->
+    <div class="card">
+        <form method="POST">
+            <input type="hidden" name="reset_month">
+            <button type="submit" class="danger-btn">
+                Reset Current Month
+            </button>
+        </form>
+    </div>
+
+    <!-- History -->
+    <div class="card">
+        <h3>Expense History</h3>
+        <table>
+            <tr>
+                <th>Amount</th>
+                <th>Description</th>
+                <th>Date</th>
+                <th>Payment Mode</th>
+                <th>Category</th>
+            </tr>
+
+            {% for expense in expenses %}
+            <tr>
+                <td>{{ expense[1] }}</td>
+                <td>{{ expense[2] }}</td>
+                <td>{{ expense[3] }}</td>
+                <td>{{ expense[4] }}</td>
+                <td>{{ expense[5] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+</div>
+
+<div class="footer">
+    Developed by Alfaj
+</div>
+
+</body>
+</html>
